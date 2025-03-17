@@ -3,9 +3,12 @@ from fastapi import FastAPI
 from src.api.router import router
 from src.database.connection import DatabaseConnection
 from src.database.models.reservations import ReservationsModel
+from src.utils.config import Config
+
+settings = Config()
 
 app: FastAPI = FastAPI(
-    title='API',
+    title=settings.app_name,
     description='',
     version='1.0.0',
     docs_url='/docs',
