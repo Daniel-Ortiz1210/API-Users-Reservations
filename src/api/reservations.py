@@ -65,7 +65,9 @@ async def create_reservation(
 
 
 @router.get('/{reservation_id}')
-async def get_reservation(reservation_id: int = Path(..., title='Reservation ID', description='The ID of the reservation to get', gt=0)):
+async def get_reservation(
+    reservation_id: int = Path(..., title='Reservation ID', description='The ID of the reservation to get', gt=0)
+):
 
     logger = Logger()
     logger.log('INFO', f"[/api/v1/reservations/{reservation_id}] [POST] Get reservation with ID {reservation_id}")
@@ -93,7 +95,7 @@ async def get_reservation(reservation_id: int = Path(..., title='Reservation ID'
 async def update_reservation(
     reservation_id: int = Path(..., title='Reservation ID', description='The ID of the reservation to update', gt=0),
     request_body: dict = Body(..., json_schema_extra=ReservationRequestSchema.model_json_schema())
-    ):
+):
 
     logger = Logger()
     logger.log('INFO', f"[/api/v1/reservations/{reservation_id}] [PUT] Update reservation with ID {reservation_id}")
@@ -131,7 +133,9 @@ async def update_reservation(
 
 
 @router.delete('/{reservation_id}')
-async def delete_reservation(reservation_id: int = Path(..., title='Reservation ID', description='The ID of the reservation to delete', gt=0)):
+async def delete_reservation(
+    reservation_id: int = Path(..., title='Reservation ID', description='The ID of the reservation to delete', gt=0)
+):
     
     logger = Logger()
     logger.log('INFO', f"[/api/v1/reservations/{reservation_id}] [DELETE] Delete reservation with ID {reservation_id}")
