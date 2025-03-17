@@ -79,7 +79,7 @@ async def get_reservation(reservation_id: int = Path(..., title='Reservation ID'
 
     if not reservation:
         logger.log('ERROR', f"[/api/v1/reservations/{reservation_id}] [POST] Reservation with ID {reservation_id} not found")
-        json_bad_response = BadResponse(detail={"reservation": "Not found"}).model_dump()
+        json_bad_response = BadResponse(message="Reservation Not Found").model_dump()
         return JSONResponse(content=json_bad_response, status_code=status.HTTP_404_NOT_FOUND)
     
     json_response = SuccessResponse(data=reservation).model_dump()
