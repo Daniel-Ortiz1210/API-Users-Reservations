@@ -13,6 +13,8 @@ class Config(BaseSettings):
     token_secret_key: str
     token_algorithm: str
     token_expiration_in_minutes: int
+    queue_url: str
+    queue_region: str
     
 
     model_config = SettingsConfigDict(env_file=f"{os.getcwd()}/.env")
