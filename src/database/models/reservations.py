@@ -23,6 +23,6 @@ class ReservationsModel(PostgresqlModel):
     scheduled_at = DateTimeField(null=False, formats=["%Y-%m-%dT%H:%M"])
     created_at = DateTimeField(default=datetime.now().isoformat(timespec="minutes"),formats=["%Y-%m-%dT%H:%M"])
     updated_at = DateTimeField(default=datetime.now().isoformat(timespec="minutes"),formats=["%Y-%m-%dT%H:%M"])
-    passenger_id = ForeignKeyField(PassengersModel, backref='reservations', on_update='CASCADE', on_delete='CASCADE')
+    passenger_id = ForeignKeyField(PassengersModel, backref='reservations', on_update='CASCADE', on_delete='CASCADE', null=True, default=None)
     class Meta:
         table_name = 'reservations'
