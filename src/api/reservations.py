@@ -161,7 +161,7 @@ async def delete_reservation(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.patch('/{reservation_id}/reserve')
+@router.patch('/{reservation_id}/add_passenger')
 async def add_passenger_to_reservation(
     body: dict = Body(..., title='Passenger ID', description='The ID of the passenger to add to the reservation', json_schema_extra=PassengerIdRequestSchema.model_json_schema()),
     reservation_id: int = Path(..., title='Reservation ID', description='The ID of the reservation to add the passenger to', gt=0)
@@ -193,11 +193,8 @@ async def add_passenger_to_reservation(
 
     sqs_service = SQSService()
 
-    message = {
-        "reservationId": reservation_id,
-        "passengerId": body['passenger_id']
-    }
+    sqs_service.send_message_to_queue({})
 
-    sqs_service.send_message_to_queue(message)
+    logger.log()
     
     return JSONResponse(content=json_response, status_code=status.HTTP_202_ACCEPTED)

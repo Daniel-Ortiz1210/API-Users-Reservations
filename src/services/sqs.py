@@ -1,8 +1,6 @@
 from boto3 import client
 from src.utils.config import Config
 
-import json
-
 settings = Config()
 
 class SQSService:
@@ -12,6 +10,9 @@ class SQSService:
     def send_message_to_queue(self, message: dict):
         response = self.client.send_message(
             QueueUrl=settings.queue_url,
-            MessageBody=json.dumps(message)
+            MessageBody='Helo world'
         )
+        print(response)
+
         return response
+    
