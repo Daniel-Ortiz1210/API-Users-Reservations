@@ -53,7 +53,7 @@ class ReservationsRepository:
             self.model.scheduled_at,
             self.model.created_at,
             self.model.updated_at
-        ).dicts()
+        ).order_by(self.model.id).dicts()
         return result
 
     def create_reservation(self, reservation: dict):
