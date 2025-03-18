@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Path, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Path, Body, Query
 from fastapi.responses import JSONResponse, Response
 
 from src.utils.logger import Logger
 from src.schemas.requests import ReservationRequestSchema
 from src.schemas.responses import SuccessResponse, BadResponse
 from src.database.repository.reservations import ReservationsRepository
+from src.database.repository.passengers import PassengersRepository
 from src.database.connection import DatabaseConnection
 
 router = APIRouter(
@@ -158,3 +159,35 @@ async def delete_reservation(
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+
+@router.put('/passengers')
+async def add_passenger_to_reservation(
+    passenger_id: int = Query(..., title='Passenger ID', description='The ID of the passenger to add to the reservation', gt=0),
+    reservation_id: int = Query(..., title='Reservation ID', description='The ID of the reservation to add the passenger to', gt=0)
+):
+    logger = Logger()
+    logger.log('INFO', f"[/api/v1/reservations/passengers] [POST] Add passenger to reservation")
+
+    db = DatabaseConnection()
+
+    passengers_repo = PassengersRepository(db)
+    reservations_repo = ReservationsRepository(db)
+
+    passenger = passengers_repo.get_passenger(passenger_id)
+    reservation = reservations_repo.get_reservation(reservation_id)
+
+    if not passenger:
+        logger.log('ERROR', f"[/api/v1/reservations/passengers] [POST] Passenger with ID {passenger_id} not found")
+        json_bad_response = BadResponse(message="Passenger Not Found").model_dump()
+        return JSONResponse(content=json_bad_response, status_code=status.HTTP_404_NOT_FOUND)
+    elif not reservation:
+        logger.log('ERROR', f"[/api/v1/reservations/passengers] [POST] Reservation with ID {reservation_id} not found")
+        json_bad_response = BadResponse(message="Reservation Not Found").model_dump()
+        return JSONResponse(content=json_bad_response, status_code=status.HTTP_404_NOT_FOUND)
+
+
+    json_response = SuccessResponse(message="Request accepted").model_dump()
+
+    db.close()
+
+    return JSONResponse(content=json_response, status_code=status.HTTP_202_ACCEPTED)
