@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from src.api.router import router
 from src.database.connection import DatabaseConnection
 from src.database.models.reservations import ReservationsModel
+from src.database.models.passengers import PassengersModel
 from src.utils.config import Config
 
 settings = Config()
@@ -19,6 +20,6 @@ app: FastAPI = FastAPI(
 @app.on_event('startup')
 async def startup_event():
     database = DatabaseConnection().get_db()
-    database.create_tables([ReservationsModel])
+    database.create_tables([PassengersModel, ReservationsModel], **{"safe": True})
 
 app.include_router(router)
