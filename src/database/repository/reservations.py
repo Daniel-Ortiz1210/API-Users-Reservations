@@ -6,6 +6,42 @@ from datetime import datetime
 from peewee import DoesNotExist
 
 class ReservationsRepository:
+    """
+    ReservationsRepository is a repository class for handling CRUD operations on reservations in the database.
+    Attributes:
+        db (PostgresqlDatabase): The database connection instance.
+        model (ReservationsModel): The model class representing the reservations table.
+    Methods:
+        get_reservations():
+            Retrieves all reservations from the database.
+            Returns:
+                list: A list of dictionaries representing the reservations.
+        create_reservation(reservation: dict):
+            Creates a new reservation in the database.
+            Args:
+                reservation (dict): A dictionary containing reservation details.
+            Returns:
+                ReservationsModel: The created reservation instance.
+        get_reservation(reservation_id: int):
+            Retrieves a specific reservation by its ID.
+            Args:
+                reservation_id (int): The ID of the reservation to retrieve.
+            Returns:
+                dict: A dictionary representing the reservation, or None if not found.
+        update_reservation(reservation_id: int, reservation: dict):
+            Updates an existing reservation in the database.
+            Args:
+                reservation_id (int): The ID of the reservation to update.
+                reservation (dict): A dictionary containing updated reservation details.
+            Returns:
+                int: The number of rows updated.
+        delete_reservation(reservation_id: int):
+            Deletes a reservation from the database.
+            Args:
+                reservation_id (int): The ID of the reservation to delete.
+            Returns:
+                int: The number of rows deleted.
+    """
     def __init__(self, db: PostgresqlDatabase):
         self.db = db
         self.model = ReservationsModel
@@ -47,3 +83,4 @@ class ReservationsRepository:
     def delete_reservation(self, reservation_id: int):
         result = self.model.delete().where(self.model.id == reservation_id).execute()
         return result
+    
