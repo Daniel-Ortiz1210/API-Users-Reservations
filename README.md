@@ -42,9 +42,6 @@ If you don't have the file, you can create it manually with the following conten
 APP_NAME='[Microservice] API Users Reservations'
 HOST='0.0.0.0'
 PORT=3000
-TOKEN_SECRET_KEY='XWPxvcaou37va213cp0xml'
-TOKEN_ALGORITHM='HS256'
-TOKEN_EXPIRATION_IN_MINUTES=2
 ```
 
 ### 4. Build and Run the Containers
