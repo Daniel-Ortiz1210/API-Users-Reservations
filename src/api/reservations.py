@@ -193,8 +193,15 @@ async def add_passenger_to_reservation(
 
     sqs_service = SQSService()
 
-    sqs_service.send_message_to_queue({})
-
-    logger.log()
+    sqs_service.send_message_to_queue(
+        {
+            "reservation_id": reservation_id,
+            "passenger_id": body['passenger_id']
+        }
+    )
     
-    return JSONResponse(content=json_response, status_code=status.HTTP_202_ACCEPTED)
+    return JSONResponse(
+        content=json_response,
+        status_code=status.HTTP_202_ACCEPTED
+        )
+        
